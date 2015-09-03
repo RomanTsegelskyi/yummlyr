@@ -1,0 +1,18 @@
+language: r
+sudo: required
+env:
+  global:
+  - CRAN: http://cran.rstudio.com
+  - LINTR_COMMENT_BOT: true
+r_binary_packages:
+- Rcpp
+- testthat
+r_github_packages:
+- jimhester/covr
+- jimhester/lintr
+notifications:
+  email:
+    on_failure: change
+after_success:
+- Rscript -e 'lintr::lint_package()'
+- Rscript -e 'covr::codecov()'

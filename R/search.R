@@ -1,4 +1,3 @@
-
 #' @export
 search_recipes <- function(word) {
     query <- sprintf("%s?_app_id=%s&_app_key=%s&q=%s", URL_SEARCH,

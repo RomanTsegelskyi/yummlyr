@@ -1,4 +1,4 @@
 library(testthat)
-library(yummlyR)
+library(yummlyr)
 
-test_check("yummlyR")
+test_check("yummlyr")

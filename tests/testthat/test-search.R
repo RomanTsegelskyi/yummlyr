@@ -1,5 +1,5 @@
 library(testthat)
-library(yummlyR)
+library(yummlyr)
 
 context("Search Recipes")
 
