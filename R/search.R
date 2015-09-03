@@ -1,8 +1,3 @@
-URL_BASE <- 'http://api.yummly.com/v1/api'
-URL_GET <- paste(URL_BASE, 'recipe/', sep = "/")
-URL_SEARCH <- paste(URL_BASE, 'recipes', sep = "/")
-URL_META <- paste(URL_BASE, 'metadata', sep = "/")
-
 
 #' @export
 search_recipes <- function(word) {
