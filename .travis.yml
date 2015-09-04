@@ -16,3 +16,4 @@ notifications:
 after_success:
 - Rscript -e 'lintr::lint_package()'
 - Rscript -e 'covr::codecov()'
+- test $TRAVIS_PULL_REQUEST == 'false' && test $TRAVIS_BRANCH == 'master' && bash updater.sh
