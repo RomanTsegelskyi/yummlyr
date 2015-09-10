@@ -22,7 +22,7 @@ fi
 # check if readme was update
 if [[ $CHANGED_FILES =~ .*README\.Rmd.* ]]
 then
-  R -e 'devtools::install_github("rstudio/rmarkdown"); install.packages("knitr", repos = "http://cran.rstudio.com"); knitr::knit("README.Rmd", "README.md")'
+  R -e 'devtools::install_github("rstudio/rmarkdown"); rmarkdown::render("README.Rmd")'
   git add README.md
 fi
 git commit -m "Update by travis after $TRAVIS_COMMIT"
