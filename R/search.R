@@ -70,15 +70,15 @@ prepare_array_parameter <- function(param, name) {
 #' @export
 check_ingredients <- function(ingredients) {
     result <- sapply(ingredients, function(ingredient) {
-        exact_match <- which(ingredient == available_ingredients[,1])
-        possible_matches <- which(grepl(ingredient, available_ingredients[,1]))
+        exact_match <- which(ingredient == available_ingredients)
+        possible_matches <- which(grepl(ingredient, available_ingredients))
         if (length(exact_match) || length(possible_matches)) {
             if (length(exact_match)) {
                 ingredient
             } else {
                 warning(sprintf("Multiple ingredients match %s (no exact match found), choosing %s",
-                        ingredient, available_ingredients[,1][possible_matches[1]]))
-                available_ingredients[,1][possible_matches[1]]
+                        ingredient, available_ingredients[possible_matches[1]]))
+                available_ingredients[possible_matches[1]]
             }
         } else {
             stop(sprintf("%s ingredient is not found (directly or loosely)", ingredient))

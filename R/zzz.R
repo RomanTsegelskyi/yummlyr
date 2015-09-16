@@ -5,9 +5,9 @@ URL_META <- paste(URL_BASE, "metadata", sep = "/")
 
 auth_cache <- new.env(hash=TRUE)
 
-.onLoad <- function(libname, pkgname) {
+.onLoad <- function(libname, pkgname) {# nocov start
     # try loading YUMMLY_APP_ID and YUMMLY_APP_KEY from environment variables for testing
     app_id <- Sys.getenv("YUMMLY_APP_ID")
     app_key <- Sys.getenv("YUMMLY_APP_KEY")
     save_yummly_credentials(app_id, app_key)
-}
+}# nocov end
