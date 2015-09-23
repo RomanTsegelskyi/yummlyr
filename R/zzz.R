@@ -15,5 +15,7 @@ func_cache <- new.env()
     app_id <- Sys.getenv("YUMMLY_APP_ID")
     app_key <- Sys.getenv("YUMMLY_APP_KEY")
     save_yummly_credentials(app_id, app_key)
-    
+    # for now for dev purpuses
+    futile.logger::flog.threshold(futile.logger::INFO)
+    yummlyr_options("log", "yummlyr")
 }# nocov end
