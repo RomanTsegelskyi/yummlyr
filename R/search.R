@@ -32,7 +32,7 @@ search_recipes <- function(search_words, allowed_ingredients, excluded_ingredien
     if (is.null(app_id) || is.null(app_key)) {
         stop("APP_ID or APP_KEY is not set. Use setup_yummly_credentials or supply appropriate arguments")
     }
-    
+    if (!is.null(yummlyr_options("log"))) flog.info(paste("query -", query), log = yummlyr_options("log"))
     response <- httr::GET(query)
     response_code <- response$status_code
     response_content <- rawToChar(response$content)
@@ -55,7 +55,6 @@ search_recipes <- function(search_words, allowed_ingredients, excluded_ingredien
 #' Prepare search parameter from direction
 #' @param param vector parameter to use
 #' @param name name for parameter to use
-#' @export
 prepare_array_parameter <- function(param, name) {
     param <- sapply(param, gsub, pattern=" ", replacement="+")
     name <- paste(name, "[]", sep="")
@@ -67,7 +66,6 @@ prepare_array_parameter <- function(param, name) {
 #' Check ingredients list against predifined ingredients by Yummly
 #' @param ingredients ingridients to check
 #' @note Predifined list is downloaded from Metadata Dictionaries
-#' @export
 check_ingredients <- function(ingredients) {
     result <- sapply(ingredients, function(ingredient) {
         exact_match <- which(ingredient == available_ingredients)

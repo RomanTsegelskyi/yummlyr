@@ -11,4 +11,6 @@ LazyData: TRUE
 Suggests: testthat
 Imports:
     httr,
-    jsonlite
+    jsonlite,
+    R.cache,
+    futile.logger
