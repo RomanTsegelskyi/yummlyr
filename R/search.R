@@ -33,21 +33,8 @@ search_recipes <- function(search_words, allowed_ingredients, excluded_ingredien
         stop("APP_ID or APP_KEY is not set. Use setup_yummly_credentials or supply appropriate arguments")
     }
     if (!is.null(yummlyr_options("log"))) flog.info(paste("query -", query), log = yummlyr_options("log"))
-    response <- httr::GET(query)
-    response_code <- response$status_code
-    response_content <- rawToChar(response$content)
-    if (response_code == 409) {
-        error_massage <- ifelse(grepl("Permission denied", response_content),
-                                "Wrong credentials", "API Rate Limit Exceeded")
-        stop(error_massage)
-    } else if (response_code == 500) {
-        stop("Request returned with Internal Server Error, please try again later")
-    } else if (response_code == 400) {
-        stop("Request is not formatted correctly, please report this error to the developers")
-    } else if (response_code != 200) {
-        stop(sprintf("Request returned with the following error %s", response_content))
-    }
-    jsonlite::fromJSON(response_content)
+    content <- perform_query(query)
+    jsonlite::fromJSON(content)
 }
 
 #' Prepare search parameter

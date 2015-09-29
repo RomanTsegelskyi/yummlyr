@@ -2,6 +2,8 @@
 
 export(disable_caching)
 export(enable_caching)
+export(get_metadata)
+export(parse_jsonp)
 export(save_yummly_credentials)
 export(search_recipes)
 export(yummlyr_options)

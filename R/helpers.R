@@ -73,3 +73,34 @@ yummlyr_options <- function(o, value) {
         options("yummlyr" = res)
     }
 }
+
+#' Process query
+perform_query <- function(query) {
+    response <- httr::GET(query)
+    response_code <- response$status_code
+    if (response_code == 409) {
+        error_massage <- ifelse(grepl("Permission denied", response_content),
+                                "Wrong credentials", "API Rate Limit Exceeded")
+        stop(error_massage)
+    } else if (response_code == 500) {
+        stop("Request returned with Internal Server Error, please try again later")
+    } else if (response_code == 400) {
+        stop("Request is not formatted correctly, please report this error to the developers")
+    } else if (response_code != 200) {
+        stop(sprintf("Request returned with the following error %s", response_content))
+    }
+    rawToChar(response$content)
+}
+
+#' Parse JSONP returned by Yummly for metadata
+#' 
+#' This function parses JSONP that yummly uses as a response.
+#' It is based on assumption that list of elements is returned.
+#' @export
+parse_jsonp <- function(jsonp) {
+    # remove function name and opening parenthesis
+    jsonp <- sub('[^\\[|\\{]*', '', jsonp) 
+    # remove closing parenthesis
+    jsonp <- sub('\\);*$', '', jsonp)
+    jsonlite::fromJSON(jsonp)
+}
