@@ -5,6 +5,8 @@
 \title{Search recipes on Yummly.com}
 \usage{
 search_recipes(search_words, allowed_ingredients, excluded_ingredients,
+  allowed_diet, allowed_allergy, allowed_cuisine, excluded_cuisine,
+  allowed_holiday, excluded_holiday, maxResults, start,
   app_id = auth_cache$APP_ID, app_key = auth_cache$APP_KEY)
 }
 \arguments{

@@ -11,30 +11,73 @@
 #'   \item Yummly Developer Guide \url{https://developer.yummly.com/documentation}
 #' }
 #' @export
-search_recipes <- function(search_words, allowed_ingredients, excluded_ingredients,
+search_recipes <- function(search_words,
+                           allowed_ingredients, excluded_ingredients,
+                           allowed_diet, allowed_allergy,
+                           allowed_cuisine, excluded_cuisine,
+                           allowed_holiday, excluded_holiday,
+                           max_results, start, nutrition,
                            app_id = auth_cache$APP_ID, app_key = auth_cache$APP_KEY) {
     if (!is.list(search_words) && !is.vector(search_words)) {
         stop("Wrong format of search lists, should be either list or vector")
     }
-    search_words <- paste(search_words, collapse = "+")
-    query <- sprintf("%s?_app_id=%s&_app_key=%s&q=%s", URL_SEARCH,
-                     app_id, app_key, search_words)
-    if (!missing(allowed_ingredients)) {
-        check_ingredients(allowed_ingredients)
-        allowed_ingredients <- prepare_array_parameter(allowed_ingredients, "allowedIngredient")
-        query <- paste(query, "&", allowed_ingredients, sep = "")
-    }
-    if (!missing(excluded_ingredients)) {
-        check_ingredients(excluded_ingredients)
-        excluded_ingredients <- prepare_array_parameter(excluded_ingredients, "excludedIngredient")
-        query <- paste(query, "&", excluded_ingredients, sep = "")        
-    }
     if (is.null(app_id) || is.null(app_key)) {
         stop("APP_ID or APP_KEY is not set. Use setup_yummly_credentials or supply appropriate arguments")
     }
-    if (!is.null(yummlyr_options("log"))) flog.info(paste("query -", query), log = yummlyr_options("log"))
+    # add search words
+    search_words <- paste(search_words, collapse = "+")
+    query <- sprintf("%s?_app_id=%s&_app_key=%s&q=%s", URL_SEARCH,
+                     app_id, app_key, search_words)
+    # add different parameters
+    query <- add_argument(allowed_ingredients, "allowedIngredient", "ingredient", query)
+    query <- add_argument(excluded_ingredients, "excludedIngredient", "ingredient", query)
+    query <- add_argument(allowed_allergy, "allowedAllergy", "allergy", query)
+    query <- add_argument(allowed_diet, "allowedDiet", "diet", query)
+    query <- add_argument(allowed_cuisine, "allowedCuisine", "cuisine", query)
+    query <- add_argument(excluded_cuisine, "excludedCuisine", "cuisine", query)
+    query <- add_argument(allowed_holiday, "allowedHoliday", "holiday", query)
+    query <- add_argument(excluded_holiday, "excludedHoliday", "holiday", query)
+    # add NUTRITION attribute
+    if (!missing(nutrition)) {
+        incorrect_nutrition <- which(names(nutrition) != metadata$nutrition[,1])
+        if (!incorrect_nutrition) {
+            stop(sprintf("%s are not correct nutrition arguments"),
+                 paste(names(nutrition)[incorrect_nutrition]), collapse = ", ")
+        }
+        incorrect_value <- which(!sapply(nutrition, function(x) is.numeric(x[[1]])))
+        if (!incorrect_value) {
+            stop(sprintf("For %s nutrition arguments, value parameter is not correct",
+                         paste(names(nutrition)[incorrect_value]), collapse = ", "))
+        } 
+        incorrect_type <- which(!sapply(nutrition, function(x) toupper(x[[2]]) %in% c("MAX", "MIN")))
+        if (!incorrect_type) {
+            stop(sprintf("For %s nutrition arguments, type parameter is not correct",
+                         paste(names(nutrition)[incorrect_type]), collapse = ", "))
+        }
+        query <- add_argument(paste(sapply(names(n), 
+                                           function(x) sprintf("nutrition.%s.%s=%s",
+                                                               x,
+                                                               tolower(n[[x]][[2]]), 
+                                                               n[[x]][[1]])),
+                                    collapse="&"),
+                              check = FALSE)
+    }
+    # add maxResult and start
+    if (!missing(max_results)) {
+        query <- paste(query, sep="&", paste("max_results", max_results, sep="="))
+    }
+    if (!missing(start)) {
+        query <- paste(query, sep="&", paste("start", start, sep="="))
+    }
     content <- perform_query(query)
     jsonlite::fromJSON(content)
+}
+
+add_argument <- function(argument_values, argument_name, type, query, check = TRUE) {
+    if (missing(argument_values)) return(query)
+    check_arguments(argument_values, type)
+    arg <- prepare_array_parameter(argument_values, argument_name)
+    paste(query, arg, sep = "&")       
 }
 
 #' Prepare search parameter
@@ -53,20 +96,28 @@ prepare_array_parameter <- function(param, name) {
 #' Check ingredients list against predifined ingredients by Yummly
 #' @param ingredients ingridients to check
 #' @note Predifined list is downloaded from Metadata Dictionaries
-check_ingredients <- function(ingredients) {
-    result <- sapply(ingredients, function(ingredient) {
-        exact_match <- which(ingredient == available_ingredients)
-        possible_matches <- which(grepl(ingredient, available_ingredients))
+check_arguments <- function(arguments, type) {
+    metadata <- metadata[[type]]
+    field <- "description"
+    available_arguments <- metadata[[field]]
+    if (is.null(available_arguments)) {
+        field <- "longDescription"
+        available_arguments <- metadata[[field]]
+    }
+    result <- sapply(arguments, function(argument) {
+        exact_match <- which(argument == available_arguments)
+        possible_matches <- which(grepl(argument, available_arguments))
         if (length(exact_match) || length(possible_matches)) {
             if (length(exact_match)) {
-                ingredient
+                metadata[exact_match, ]$searchValue
             } else {
-                warning(sprintf("Multiple ingredients match %s (no exact match found), choosing %s",
-                        ingredient, available_ingredients[possible_matches[1]]))
-                available_ingredients[possible_matches[1]]
+                warning(sprintf("Multiple arguments match %s (no exact match found), choosing %s",
+                                argument, metadata[possible_matches[1], ][[field]]))
+                metadata[possible_matches[1], ][[field]]
             }
         } else {
-            stop(sprintf("%s ingredient is not found (directly or loosely)", ingredient))
+            stop(sprintf("%s argument is not found (directly or loosely)", argument))
         }
     })
+    result
 }

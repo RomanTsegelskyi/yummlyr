@@ -7,6 +7,8 @@ auth_cache <- new.env()
 
 func_cache <- new.env()
 
+flavours <- c("sweet", "meaty", "sour", "bitter", "sweet", "piquant")
+
 .onLoad <- function(libname, pkgname) {# nocov start
     options("yummlyr" = list(
         'log'                   = NULL
