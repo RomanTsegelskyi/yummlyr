@@ -12,5 +12,3 @@ Suggests: testthat
 Imports:
     httr,
     jsonlite,
-    R.cache,
-    futile.logger

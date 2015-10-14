@@ -11,7 +11,7 @@
 #'   \item Yummly Developer Guide \url{https://developer.yummly.com/documentation}
 #' }
 #' @export
-search_recipes <- function(search_words,
+search_recipes <- function(search_words, require_pictures,
                            allowed_ingredients, excluded_ingredients,
                            allowed_diet, allowed_allergy,
                            allowed_cuisine, excluded_cuisine,
@@ -25,9 +25,17 @@ search_recipes <- function(search_words,
         stop("APP_ID or APP_KEY is not set. Use setup_yummly_credentials or supply appropriate arguments")
     }
     # add search words
-    search_words <- paste(search_words, collapse = "+")
+    search_words <- paste(search_words, collapse = " ")
     query <- sprintf("%s?_app_id=%s&_app_key=%s&q=%s", URL_SEARCH,
                      app_id, app_key, search_words)
+    # add pictures requirement
+    if (!missing(require_pictures)) {
+        if (is.logical(require_pictures)) {
+            query <- sprintf("%s&requirePictures=%s", query, tolower(require_pictures[1]))  
+        } else {
+            warning("require_pictures argument is not logical, it will be discarded")
+        }
+    }
     # add different parameters
     query <- add_argument(allowed_ingredients, "allowedIngredient", "ingredient", query)
     query <- add_argument(excluded_ingredients, "excludedIngredient", "ingredient", query)
@@ -69,13 +77,17 @@ search_recipes <- function(search_words,
     if (!missing(start)) {
         query <- paste(query, sep="&", paste("start", start, sep="="))
     }
-    content <- perform_query(query)
+    content <- perform_query(URLencode(query))
     jsonlite::fromJSON(content)
 }
 
 add_argument <- function(argument_values, argument_name, type, query, check = TRUE) {
-    if (missing(argument_values)) return(query)
-    check_arguments(argument_values, type)
+    if (missing(argument_values)) {
+        return(query)
+    }
+    if (check) {
+        argument_values <- check_arguments(argument_values, type)
+    }
     arg <- prepare_array_parameter(argument_values, argument_name)
     paste(query, arg, sep = "&")       
 }
@@ -86,7 +98,6 @@ add_argument <- function(argument_values, argument_name, type, query, check = TR
 #' @param param vector parameter to use
 #' @param name name for parameter to use
 prepare_array_parameter <- function(param, name) {
-    param <- sapply(param, gsub, pattern=" ", replacement="+")
     name <- paste(name, "[]", sep="")
     paste(name, param, sep= "=", collapse ="&")
 }
@@ -113,7 +124,7 @@ check_arguments <- function(arguments, type) {
             } else {
                 warning(sprintf("Multiple arguments match %s (no exact match found), choosing %s",
                                 argument, metadata[possible_matches[1], ][[field]]))
-                metadata[possible_matches[1], ][[field]]
+                metadata[possible_matches[1], ]$searchValue
             }
         } else {
             stop(sprintf("%s argument is not found (directly or loosely)", argument))

@@ -20,24 +20,6 @@ disable_caching <- function() {
     if (!is.null(yummlyr_options("log"))) flog.info("Caching is disabled", log=yummlyr_options("log"))
 }
 
-#' Reassing object in the environment
-#'
-#' Wrapper to reassign function in namespace that deals with lockedBinding if needed
-#' @param name name of an object to be replaced
-#' @param obj object that will be put in the environment
-#' @param env environment to be replaced in
-reassign_env <- function(name, obj, env) {
-    if (exists(name, env)) {
-        if (bindingIsLocked(name, env)) {
-            unlockBinding(name, env)
-            assign(name, obj, envir = env)
-            lockBinding(name, env)
-        } else {
-            assign(name, obj, envir = env)
-        }
-    } 
-}
-
 #' Querying/setting yummlyr option
 #'
 #' To list all \code{yummlyr} options, just run this function without any parameters provided. To query only one value, pass the first parameter. To set that, use the \code{value} parameter too.
@@ -76,8 +58,10 @@ yummlyr_options <- function(o, value) {
 
 #' Process query
 perform_query <- function(query) {
+    print(query)
     response <- httr::GET(query)
     response_code <- response$status_code
+    response_content <- rawToChar(response$content)
     if (response_code == 409) {
         error_massage <- ifelse(grepl("Permission denied", response_content),
                                 "Wrong credentials", "API Rate Limit Exceeded")
@@ -89,14 +73,13 @@ perform_query <- function(query) {
     } else if (response_code != 200) {
         stop(sprintf("Request returned with the following error %s", response_content))
     }
-    rawToChar(response$content)
+    response_content
 }
 
 #' Parse JSONP returned by Yummly for metadata
 #' 
 #' This function parses JSONP that yummly uses as a response.
 #' It is based on assumption that list of elements is returned.
-#' @export
 parse_jsonp <- function(jsonp) {
     # remove function name and opening parenthesis
     jsonp <- sub('[^\\[|\\{]*', '', jsonp) 
