@@ -1,7 +1,4 @@
+^appveyor\.yml$
+^README\.r*md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.travis\.yml$
-^README\.Rmd$
-^README-.*\.png$
-\.gitignore
-^\.Rprofile
