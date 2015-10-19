@@ -4,10 +4,11 @@
 \alias{search_recipes}
 \title{Search recipes on Yummly.com}
 \usage{
-search_recipes(search_words, allowed_ingredients, excluded_ingredients,
-  allowed_diet, allowed_allergy, allowed_cuisine, excluded_cuisine,
-  allowed_holiday, excluded_holiday, max_results, start, nutrition,
-  app_id = auth_cache$APP_ID, app_key = auth_cache$APP_KEY)
+search_recipes(search_words, require_pictures, allowed_ingredients,
+  excluded_ingredients, allowed_diet, allowed_allergy, allowed_cuisine,
+  excluded_cuisine, allowed_course, excluded_course, allowed_holiday,
+  excluded_holiday, max_results, start, nutrition, app_id = auth_cache$APP_ID,
+  app_key = auth_cache$APP_KEY)
 }
 \arguments{
 \item{search_words}{search phrase, can be supplied in from of vector of words}

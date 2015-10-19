@@ -4,21 +4,23 @@ library(yummlyr)
 context("Search Recipes")
 
 test_that("Search with actual http requests", {
-#     result <- search_recipes("bacon")
-#     expect_is(result, "list")
-#     expect_equal(length(result), 5)
-#     result <- search_recipes("bacon", allowed_ingredients = "asparagus")
-#     expect_true(all(unlist(lapply(result$matches$ingredients, function(x) any(sapply(x, grepl, pattern="asparagus"))))))
-#     expect_error(search_recipes("bacon", allowed_ingredients = "asparagus2"))
-#     expect_warning(search_recipes("bacon", allowed_ingredients = "fried"))
-#     result <- search_recipes("bacon", excluded_ingredients = "asparagus")
-#     expect_false(any(unlist(lapply(result$matches$ingredients, function(x) any(sapply(x[[1]], grepl, pattern="asparagus"))))))
-#     expect_error(search_recipes("bacon", allowed_ingredients = "asparagus2"))
-#     expect_warning(search_recipes("bacon", allowed_ingredients = "fried"))
+    if (Sys.getenv("TRAVIS") != "") {
+        result <- search_recipes("bacon")
+        expect_is(result, "list")
+        expect_equal(length(result), 5)
+        result <- search_recipes("bacon", allowed_ingredients = "asparagus")
+        expect_true(all(unlist(lapply(result$matches$ingredients, function(x) any(sapply(x, grepl, pattern="asparagus"))))))
+        expect_error(search_recipes("bacon", allowed_ingredients = "asparagus2"))
+        expect_warning(search_recipes("bacon", allowed_ingredients = "fried"))
+        result <- search_recipes("bacon", excluded_ingredients = "asparagus")
+        expect_false(any(unlist(lapply(result$matches$ingredients, function(x) any(sapply(x[[1]], grepl, pattern="asparagus"))))))
+        expect_error(search_recipes("bacon", allowed_ingredients = "asparagus2"))
+        expect_warning(search_recipes("bacon", allowed_ingredients = "fried"))
+    }
 })
 
 
-test_that("Search. Words work (with mocks)", {
+test_that("Search. search_words argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
@@ -29,7 +31,7 @@ test_that("Search. Words work (with mocks)", {
     )
 })
 
-test_that("Search. RequirePicturesult work (with mocks)", {
+test_that("Search. require_pictures argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
@@ -38,7 +40,7 @@ test_that("Search. RequirePicturesult work (with mocks)", {
     )
 })
 
-test_that("Search. Included ingredients work (with mocks)", {
+test_that("Search. allowed_ingredients argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
@@ -51,7 +53,7 @@ test_that("Search. Included ingredients work (with mocks)", {
     )
 })
 
-test_that("Search. Excluded ingredients work (with mocks)", {
+test_that("Search. excluded_ingredients argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
@@ -64,7 +66,7 @@ test_that("Search. Excluded ingredients work (with mocks)", {
     )
 })
 
-test_that("Search. Allergy work (with mocks)", {
+test_that("Search. allowed_allergy argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
@@ -75,7 +77,7 @@ test_that("Search. Allergy work (with mocks)", {
     )
 })
 
-test_that("Search. allowedDiet works (with mocks)", {
+test_that("Search. allowed_diet argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
@@ -83,5 +85,49 @@ test_that("Search. allowedDiet works (with mocks)", {
         expect_true(grepl("allowedDiet\\[\\]=390%5EPescetarian&allowedDiet\\[\\]=388%5ELacto%20vegetarian$", result)),
         expect_error(search_recipes("bacon", allowed_diet = "Lacto2")),
         expect_warning(search_recipes("bacon", allowed_diet = "Lacto"))
+    )
+})
+
+test_that("Search. allowed_cuisine argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", allowed_cuisine =c("American")),
+        expect_true(grepl("allowedCuisine\\[\\]=cuisine%5Ecuisine-american", result)),
+        expect_error(search_recipes("bacon", allowed_cuisine = "American2")),
+        expect_warning(search_recipes("bacon", allowed_cuisine = "Ame"))
+    )
+})
+
+test_that("Search. excluded_cuisine argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", excluded_cuisine =c("American")),
+        expect_true(grepl("excludedCuisine\\[\\]=cuisine%5Ecuisine-american", result)),
+        expect_error(search_recipes("bacon", excluded_cuisine = "American2")),
+        expect_warning(search_recipes("bacon", excluded_cuisine = "Ame"))
+    )
+})
+
+test_that("Search. allowed_cuisine argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", allowed_course =c("Appetizers")),
+        expect_true(grepl("allowedCourse\\[\\]=course%5Ecourse-Appetizers", result)),
+        expect_error(search_recipes("bacon", allowed_course = "Appetizers2")),
+        expect_warning(search_recipes("bacon", allowed_course = "Appeti"))
+    )
+})
+
+test_that("Search. excluded_course argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", excluded_course =c("Appetizers")),
+        expect_true(grepl("excludedCourse\\[\\]=course%5Ecourse-Appetizers", result)),
+        expect_error(search_recipes("bacon", excluded_course = "Appetizers2")),
+        expect_warning(search_recipes("bacon", excluded_course = "Appeti"))
     )
 })

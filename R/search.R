@@ -15,6 +15,7 @@ search_recipes <- function(search_words, require_pictures,
                            allowed_ingredients, excluded_ingredients,
                            allowed_diet, allowed_allergy,
                            allowed_cuisine, excluded_cuisine,
+                           allowed_course, excluded_course,
                            allowed_holiday, excluded_holiday,
                            max_results, start, nutrition,
                            app_id = auth_cache$APP_ID, app_key = auth_cache$APP_KEY) {
@@ -43,6 +44,8 @@ search_recipes <- function(search_words, require_pictures,
     query <- add_argument(allowed_diet, "allowedDiet", "diet", query)
     query <- add_argument(allowed_cuisine, "allowedCuisine", "cuisine", query)
     query <- add_argument(excluded_cuisine, "excludedCuisine", "cuisine", query)
+    query <- add_argument(allowed_course, "allowedCourse", "course", query)
+    query <- add_argument(excluded_course, "excludedCourse", "course", query)
     query <- add_argument(allowed_holiday, "allowedHoliday", "holiday", query)
     query <- add_argument(excluded_holiday, "excludedHoliday", "holiday", query)
     # add NUTRITION attribute
