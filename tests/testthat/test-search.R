@@ -110,7 +110,7 @@ test_that("Search. excluded_cuisine argument works (with mocks)", {
     )
 })
 
-test_that("Search. allowed_cuisine argument works (with mocks)", {
+test_that("Search. allowed_course argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
@@ -129,5 +129,71 @@ test_that("Search. excluded_course argument works (with mocks)", {
         expect_true(grepl("excludedCourse\\[\\]=course%5Ecourse-Appetizers", result)),
         expect_error(search_recipes("bacon", excluded_course = "Appetizers2")),
         expect_warning(search_recipes("bacon", excluded_course = "Appeti"))
+    )
+})
+
+test_that("Search. allowed_holiday argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", allowed_holiday =c("Thanksgiving")),
+        expect_true(grepl("allowedHoliday\\[\\]=holiday%5Eholiday-thanksgiving", result)),
+        expect_error(search_recipes("bacon", allowed_holiday = "Thanksgiving2")),
+        expect_warning(search_recipes("bacon", allowed_holiday = "Thanks"))
+    )
+})
+
+test_that("Search. excluded_holiday argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", excluded_holiday =c("Thanksgiving")),
+        expect_true(grepl("excludedHoliday\\[\\]=holiday%5Eholiday-thanksgiving", result)),
+        expect_error(search_recipes("bacon", excluded_holiday = "Thanksgiving2")),
+        expect_warning(search_recipes("bacon", excluded_holiday = "Thanks"))
+    )
+})
+
+test_that("Search. max_total_time argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", max_total_time = 5400),
+        expect_true(grepl("&maxTotalTimeInSeconds=5400", result)),
+        result <- search_recipes("bacon", max_total_time = "a"),
+        expect_true(!grepl("maxTotalTimeInSeconds", result))
+    )
+})
+
+test_that("Search. max_retults argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", max_results = 20),
+        expect_true(grepl("&maxResult=20", result)),
+        result <- search_recipes("bacon", max_results = "a"),
+        expect_true(!grepl("maxResult", result))
+    )
+})
+
+test_that("Search. start argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", start = 20),
+        expect_true(grepl("&start=20", result)),
+        result <- search_recipes("bacon", start = "a"),
+        expect_true(!grepl("start", result))
+    )
+})
+
+test_that("Search. start argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", nutrition = list(Ca=list(value=3,type="MIN"),
+                                                           Ca=list(value=3.5, type="MAX"))),
+        result,
+        expect_true(grepl("&nutrition.CA.min=3&nutrition.CA.max=3.5", result))
     )
 })

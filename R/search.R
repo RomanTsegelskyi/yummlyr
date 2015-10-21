@@ -17,6 +17,7 @@ search_recipes <- function(search_words, require_pictures,
                            allowed_cuisine, excluded_cuisine,
                            allowed_course, excluded_course,
                            allowed_holiday, excluded_holiday,
+                           max_total_time,
                            max_results, start, nutrition,
                            app_id = auth_cache$APP_ID, app_key = auth_cache$APP_KEY) {
     if (!is.list(search_words) && !is.vector(search_words)) {
@@ -48,9 +49,19 @@ search_recipes <- function(search_words, require_pictures,
     query <- add_argument(excluded_course, "excludedCourse", "course", query)
     query <- add_argument(allowed_holiday, "allowedHoliday", "holiday", query)
     query <- add_argument(excluded_holiday, "excludedHoliday", "holiday", query)
+    # add maxTotalTime, maxResult, start
+    if (!missing(max_total_time) && is.numeric(max_total_time)) {
+        query <- paste(query, "&maxTotalTimeInSeconds=", max_total_time[1], sep="")
+    } 
+    if (!missing(max_results) && is.numeric(max_results)) {
+        query <- paste(query, "&maxResult=", max_results[1], sep="")
+    }
+    if (!missing(start) && is.numeric(start)) {
+        query <- paste(query, "&start=", start[1], sep="")
+    }
     # add NUTRITION attribute
     if (!missing(nutrition)) {
-        incorrect_nutrition <- which(names(nutrition) != metadata$nutrition[,1])
+        incorrect_nutrition <- sapply(names(nutrition), grepl(x, metadata$nutrition[,2]))
         if (!incorrect_nutrition) {
             stop(sprintf("%s are not correct nutrition arguments"),
                  paste(names(nutrition)[incorrect_nutrition]), collapse = ", ")
@@ -72,13 +83,6 @@ search_recipes <- function(search_words, require_pictures,
                                                                n[[x]][[1]])),
                                     collapse="&"),
                               check = FALSE)
-    }
-    # add maxResult and start
-    if (!missing(max_results)) {
-        query <- paste(query, sep="&", paste("max_results", max_results, sep="="))
-    }
-    if (!missing(start)) {
-        query <- paste(query, sep="&", paste("start", start, sep="="))
     }
     content <- perform_query(URLencode(query))
     jsonlite::fromJSON(content)
