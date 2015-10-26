@@ -8,14 +8,14 @@ test_that("Search with actual http requests", {
         result <- search_recipes("bacon")
         expect_is(result, "list")
         expect_equal(length(result), 5)
-        result <- search_recipes("bacon", allowed_ingredients = "asparagus")
+        result <- search_recipes("bacon", allowed_ingredient = "asparagus")
         expect_true(all(unlist(lapply(result$matches$ingredients, function(x) any(sapply(x, grepl, pattern="asparagus"))))))
-        expect_error(search_recipes("bacon", allowed_ingredients = "asparagus2"))
-        expect_warning(search_recipes("bacon", allowed_ingredients = "fried"))
-        result <- search_recipes("bacon", excluded_ingredients = "asparagus")
+        expect_error(search_recipes("bacon", allowed_ingredient = "asparagus2"))
+        expect_warning(search_recipes("bacon", allowed_ingredient = "fried"))
+        result <- search_recipes("bacon", excluded_ingredient = "asparagus")
         expect_false(any(unlist(lapply(result$matches$ingredients, function(x) any(sapply(x[[1]], grepl, pattern="asparagus"))))))
-        expect_error(search_recipes("bacon", allowed_ingredients = "asparagus2"))
-        expect_warning(search_recipes("bacon", allowed_ingredients = "fried"))
+        expect_error(search_recipes("bacon", allowed_ingredient = "asparagus2"))
+        expect_warning(search_recipes("bacon", allowed_ingredient = "fried"))
     }
 })
 
@@ -40,28 +40,28 @@ test_that("Search. require_pictures argument works (with mocks)", {
     )
 })
 
-test_that("Search. allowed_ingredients argument works (with mocks)", {
+test_that("Search. allowed_ingredient argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
-        result <- search_recipes("bacon", allowed_ingredients="garlic"),
+        result <- search_recipes("bacon", allowed_ingredient="garlic"),
         expect_true(grepl("allowedIngredient\\[\\]=garlic$", result)),
-        result <- search_recipes("bacon", allowed_ingredients=c("garlic", "asparagus")),
+        result <- search_recipes("bacon", allowed_ingredient=c("garlic", "asparagus")),
         expect_true(grepl("allowedIngredient\\[\\]=garlic&allowedIngredient\\[\\]=asparagus", result)),
-        expect_error(search_recipes("bacon", allowed_ingredients = "asparagus2")),
-        expect_warning(search_recipes("bacon", allowed_ingredients = "fried"))
+        expect_error(search_recipes("bacon", allowed_ingredient = "asparagus2")),
+        expect_warning(search_recipes("bacon", allowed_ingredient = "fried"))
     )
 })
 
-test_that("Search. excluded_ingredients argument works (with mocks)", {
+test_that("Search. excluded_ingredient argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
-        result <- search_recipes("bacon", excluded_ingredients = c("garlic","asparagus")),
+        result <- search_recipes("bacon", excluded_ingredient = c("garlic","asparagus")),
         expect_true(grepl("excludedIngredient\\[\\]=garlic&excludedIngredient\\[\\]=asparagus$", result)),
-        expect_error(search_recipes("bacon", excluded_ingredients = "asparagus2")),
-        expect_warning(search_recipes("bacon", excluded_ingredients = "fried")),
-        result <- search_recipes("bacon", excluded_ingredients=c("onion soup mix", "asparagus")),
+        expect_error(search_recipes("bacon", excluded_ingredient = "asparagus2")),
+        expect_warning(search_recipes("bacon", excluded_ingredient = "fried")),
+        result <- search_recipes("bacon", excluded_ingredient=c("onion soup mix", "asparagus")),
         expect_true(grepl("excludedIngredient\\[\\]=onion%20soup%20mix&excludedIngredient\\[\\]=asparagus$", result))
     )
 })
@@ -215,5 +215,17 @@ test_that("Search. flavor argument works (with mocks)", {
         expect_error(search_recipes("bacon", flavor = list(Calcium2=list(min=3, max=3.5)))),
         expect_error(search_recipes("bacon", flavor = list(sweet=list(min=3, max=3.5)))),
         expect_error(search_recipes("bacon", flavor = list(Calcium=list(a=3, max=3.5))))
+    )
+})
+
+test_that("Search. facetField argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", facet_field = "diet"),
+        expect_true(grepl("&facetField\\[\\]=diet", result)),
+        result <- search_recipes("bacon", facet_field = c("ingredient", "diet")),
+        expect_true(grepl("&facetField\\[\\]=ingredient&facetField\\[\\]=diet", result)),
+        expect_error(search_recipes("bacon", facet_field = "test"))
     )
 })

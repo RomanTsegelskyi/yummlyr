@@ -2,8 +2,8 @@
 #'
 #' Query Yummly.com API to search for recipes with certain parameters
 #' @param search_words search phrase, can be supplied in from of vector of words
-#' @param allowed_ingredients ingredient that all search results must include
-#' @param excluded_ingredients ingredient that all search results should not contain
+#' @param allowed_ingredient ingredient that all search results must include
+#' @param excluded_ingredient ingredient that all search results should not contain
 #' @param app_id application ID
 #' @param app_key application key
 #' @note This function resembles search query to Yummly API
@@ -12,7 +12,7 @@
 #' }
 #' @export
 search_recipes <- function(search_words, require_pictures,
-                           allowed_ingredients, excluded_ingredients,
+                           allowed_ingredient, excluded_ingredient,
                            allowed_diet, allowed_allergy,
                            allowed_cuisine, excluded_cuisine,
                            allowed_course, excluded_course,
@@ -20,6 +20,7 @@ search_recipes <- function(search_words, require_pictures,
                            max_total_time,
                            max_results, start,
                            nutrition, flavor,
+                           facet_field,
                            app_id = auth_cache$APP_ID, app_key = auth_cache$APP_KEY) {
     if (!is.list(search_words) && !is.vector(search_words)) {
         stop("Wrong format of search lists, should be either list or vector")
@@ -40,8 +41,8 @@ search_recipes <- function(search_words, require_pictures,
         }
     }
     # add different parameters
-    query <- add_argument(allowed_ingredients, "allowedIngredient", "ingredient", query)
-    query <- add_argument(excluded_ingredients, "excludedIngredient", "ingredient", query)
+    query <- add_argument(allowed_ingredient, "allowedIngredient", "ingredient", query)
+    query <- add_argument(excluded_ingredient, "excludedIngredient", "ingredient", query)
     query <- add_argument(allowed_allergy, "allowedAllergy", "allergy", query)
     query <- add_argument(allowed_diet, "allowedDiet", "diet", query)
     query <- add_argument(allowed_cuisine, "allowedCuisine", "cuisine", query)
@@ -118,6 +119,12 @@ search_recipes <- function(search_words, require_pictures,
                                          c(min, max)
                                      })
         query <- add_argument(unlist(flavor_argument), argument_name = "", check = FALSE, query = query)
+    }
+    if (!missing(facet_field)) {
+        if (!all(facet_field %in% c("ingredient", "diet"))) {
+            stop("Wrong facetField argument. Only diet and ingredient are supported")
+        }
+        query <- add_argument(facet_field, "facetField", "", query, check = FALSE)
     }
     content <- perform_query(URLencode(query))
     jsonlite::fromJSON(content)
