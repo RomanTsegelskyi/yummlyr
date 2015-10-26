@@ -61,28 +61,30 @@ search_recipes <- function(search_words, require_pictures,
     }
     # add NUTRITION attribute
     if (!missing(nutrition)) {
-        incorrect_nutrition <- sapply(names(nutrition), grepl(x, metadata$nutrition[,2]))
-        if (!incorrect_nutrition) {
-            stop(sprintf("%s are not correct nutrition arguments"),
-                 paste(names(nutrition)[incorrect_nutrition]), collapse = ", ")
-        }
+        nutrition_search_values <- check_arguments(names(nutrition), "nutrition")
         incorrect_value <- which(!sapply(nutrition, function(x) is.numeric(x[[1]])))
-        if (!incorrect_value) {
+        if (length(incorrect_value)) {
             stop(sprintf("For %s nutrition arguments, value parameter is not correct",
                          paste(names(nutrition)[incorrect_value]), collapse = ", "))
         } 
-        incorrect_type <- which(!sapply(nutrition, function(x) toupper(x[[2]]) %in% c("MAX", "MIN")))
-        if (!incorrect_type) {
+        incorrect_type <- which(!sapply(nutrition, function(x) names(x) %in% c("max", "min")))
+        if (length(incorrect_type)) {
             stop(sprintf("For %s nutrition arguments, type parameter is not correct",
                          paste(names(nutrition)[incorrect_type]), collapse = ", "))
         }
-        query <- add_argument(paste(sapply(names(n), 
-                                           function(x) sprintf("nutrition.%s.%s=%s",
-                                                               x,
-                                                               tolower(n[[x]][[2]]), 
-                                                               n[[x]][[1]])),
-                                    collapse="&"),
-                              check = FALSE)
+        nutrition_argument <- sapply(names(nutrition), 
+                                     function(x) {
+                                         min <- sprintf("nutrition.%s.%s=%s",
+                                                        nutrition_search_values[x],
+                                                        "min",
+                                                        nutrition[[x]]$min)
+                                         max <- sprintf("nutrition.%s.%s=%s",
+                                                        nutrition_search_values[x],
+                                                        "max",
+                                                        nutrition[[x]]$max)
+                                         c(min, max)
+                                     })
+        query <- add_argument(unlist(nutrition_argument), argument_name = "", check = FALSE, query = query)
     }
     content <- perform_query(URLencode(query))
     jsonlite::fromJSON(content)
@@ -105,8 +107,12 @@ add_argument <- function(argument_values, argument_name, type, query, check = TR
 #' @param param vector parameter to use
 #' @param name name for parameter to use
 prepare_array_parameter <- function(param, name) {
-    name <- paste(name, "[]", sep="")
-    paste(name, param, sep= "=", collapse ="&")
+    if (name != "") {
+        name <- paste(name, "[]=", sep="")
+    } else {
+        name <- paste(name, sep="")
+    }
+    paste(name, param, sep= "", collapse ="&")
 }
 
 #' Check ingredients

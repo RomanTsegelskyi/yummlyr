@@ -191,9 +191,13 @@ test_that("Search. start argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
-        result <- search_recipes("bacon", nutrition = list(Ca=list(value=3,type="MIN"),
-                                                           Ca=list(value=3.5, type="MAX"))),
-        result,
-        expect_true(grepl("&nutrition.CA.min=3&nutrition.CA.max=3.5", result))
+        result <- search_recipes("bacon", nutrition = list(Calcium=list(min=3, max=3.5))),
+        expect_true(grepl("&nutrition.CA.min=3&nutrition.CA.max=3.5", result)),
+        result <- search_recipes("bacon", nutrition = list(Calcium=list(max=3.5))),
+        expect_true(grepl("&nutrition.CA.max=3.5", result)),
+        result <- search_recipes("bacon", nutrition = list(Calcium=list(max=3.5), Cholesterol=list(min=2))),
+        expect_true(grepl("&nutrition.CA.max=3.5&nutrition.CHOLE.min=2", result)),
+        expect_error(search_recipes("bacon", nutrition = list(Calcium2=list(min=3, max=3.5)))),
+        expect_error(search_recipes("bacon", nutrition = list(Calcium=list(a=3, max=3.5))))
     )
 })
