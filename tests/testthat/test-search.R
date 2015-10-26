@@ -187,7 +187,7 @@ test_that("Search. start argument works (with mocks)", {
     )
 })
 
-test_that("Search. start argument works (with mocks)", {
+test_that("Search. nutrition argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
@@ -199,5 +199,21 @@ test_that("Search. start argument works (with mocks)", {
         expect_true(grepl("&nutrition.CA.max=3.5&nutrition.CHOLE.min=2", result)),
         expect_error(search_recipes("bacon", nutrition = list(Calcium2=list(min=3, max=3.5)))),
         expect_error(search_recipes("bacon", nutrition = list(Calcium=list(a=3, max=3.5))))
+    )
+})
+
+test_that("Search. flavor argument works (with mocks)", {
+    with_mock(
+        `yummlyr::perform_query` = function(query) query,
+        `jsonlite::fromJSON` = function(content) content,
+        result <- search_recipes("bacon", flavor = list(sweet=list(min=0.1, max=1))),
+        expect_true(grepl("&flavor.sweet.min=0.1&flavor.sweet.max=1", result)),
+        result <- search_recipes("bacon", flavor = list(sweet=list(min=0.1))),
+        expect_true(grepl("&flavor.sweet.min=0.1", result)),
+        result <- search_recipes("bacon", flavor = list(sweet=list(min=0.1), sour=list(max=0.8))),
+        expect_true(grepl("&flavor.sweet.min=0.1&flavor.sour.max=0.8", result)),
+        expect_error(search_recipes("bacon", flavor = list(Calcium2=list(min=3, max=3.5)))),
+        expect_error(search_recipes("bacon", flavor = list(sweet=list(min=3, max=3.5)))),
+        expect_error(search_recipes("bacon", flavor = list(Calcium=list(a=3, max=3.5))))
     )
 })

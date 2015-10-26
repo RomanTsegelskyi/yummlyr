@@ -18,7 +18,8 @@ search_recipes <- function(search_words, require_pictures,
                            allowed_course, excluded_course,
                            allowed_holiday, excluded_holiday,
                            max_total_time,
-                           max_results, start, nutrition,
+                           max_results, start,
+                           nutrition, flavor,
                            app_id = auth_cache$APP_ID, app_key = auth_cache$APP_KEY) {
     if (!is.list(search_words) && !is.vector(search_words)) {
         stop("Wrong format of search lists, should be either list or vector")
@@ -85,6 +86,38 @@ search_recipes <- function(search_words, require_pictures,
                                          c(min, max)
                                      })
         query <- add_argument(unlist(nutrition_argument), argument_name = "", check = FALSE, query = query)
+    }
+    # add flavor attribute
+    if (!missing(flavor)) {
+        flavor_search_values <- check_arguments(names(flavor), "flavor")
+        incorrect_value <- which(!sapply(flavor, function(x) is.numeric(x[[1]])))
+        if (length(incorrect_value)) {
+            stop(sprintf("For %s flavor arguments, value parameter is not correct",
+                         paste(names(flavor)[incorrect_value]), collapse = ", "))
+        } 
+        incorrect_type <- which(!sapply(flavor, function(x) names(x) %in% c("max", "min")))
+        if (length(incorrect_type)) {
+            stop(sprintf("For %s flavor arguments, type parameter is not correct",
+                         paste(names(flavor)[incorrect_type]), collapse = ", "))
+        }
+        incorrect_value <- which(!sapply(flavor, function(x) unlist(x) >= 0 && unlist(x) <= 1.0))
+        if (length(incorrect_value)) {
+            stop(sprintf("For %s flavor arguments, value parameter is not correct. It should be between 0 and 1",
+                         paste(names(flavor)[incorrect_value]), collapse = ", "))
+        }
+        flavor_argument <- sapply(names(flavor), 
+                                     function(x) {
+                                         min <- sprintf("flavor.%s.%s=%s",
+                                                        flavor_search_values[x],
+                                                        "min",
+                                                        flavor[[x]]$min)
+                                         max <- sprintf("flavor.%s.%s=%s",
+                                                        flavor_search_values[x],
+                                                        "max",
+                                                        flavor[[x]]$max)
+                                         c(min, max)
+                                     })
+        query <- add_argument(unlist(flavor_argument), argument_name = "", check = FALSE, query = query)
     }
     content <- perform_query(URLencode(query))
     jsonlite::fromJSON(content)
