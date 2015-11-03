@@ -4,10 +4,10 @@ library(yummlyr)
 context("Get Recipes")
 
 test_that("Get with actual http requests", {
-    if (Sys.getenv("TRAVIS") != "") {
+    if (Sys.getenv("TRAVIS") != "" || Sys.getenv("APPVEYOR") != "") {
         result <- get_recipe("French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364")
         expect_is(result, "list")
-        expect_equal(lenght(res), 14)
+        expect_equal(length(result), 14)
     }
 })
 

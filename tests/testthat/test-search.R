@@ -4,7 +4,7 @@ library(yummlyr)
 context("Search Recipes")
 
 test_that("Search with actual http requests", {
-    if (Sys.getenv("TRAVIS") != "") {
+    if (Sys.getenv("TRAVIS") != "" || Sys.getenv("APPVEYOR") != "") {
         result <- search_recipes("bacon")
         expect_is(result, "list")
         expect_equal(length(result), 5)
