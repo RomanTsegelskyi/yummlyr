@@ -1,9 +1,26 @@
 #' Search recipes on Yummly.com
 #'
-#' Query Yummly.com API to search for recipes with certain parameters
+#' Query Yummly.com API to search for recipes with certain parameter. All parameters are optional and can be used in any combination.
+#' The criteria you pass via the various parameters are combined with the AND operator (set conjunction). In other words, every recipe has to match the search phrase and satisfy the ingredient, cuisine, course, holiday, time, nutrition, and taste restrictions as described below.
+#' If you specify a multi-word phrase to the q parameter, every word has to match something in each matching recipe:
 #' @param search_words search phrase, can be supplied in from of vector of words
+#' @param require_pictures set to \code{TRUE} if only to return recipes with photos
 #' @param allowed_ingredient ingredient that all search results must include
 #' @param excluded_ingredient ingredient that all search results should not contain
+#' @param allowed_allergy only include recipes whose ingredients are allowed for that allergy
+#' @param allowed_diet search results will only include recipes whose ingredients are allowed for that diet
+#' @param allowed_cuisine search results will only include recipes with that cuisine
+#' @param excluded_cuisine search results will only exclude recipes with that cuisine
+#' @param allowed_course search results will only include recipes with that cuisine
+#' @param excluded_course search results will only exclude recipes with that cuisine
+#' @param allowed holiday search results will only include recipes with that holiday
+#' @param excluded_holiday search results will only exclude recipes with that holiday
+#' @param max_total_time search for recipes that do not exceed a specified max total cook + prep time in seconds
+#' @param max_results number of results to return
+#' @param start start with specific result in search
+#' @param nutrition set the range of allowed values for a given nutrition attribute (see below for the list of supported nutrition attributes) by setting a min and/or a max
+#' @param flavor set the ranges for taste attributes (this corresponds to the taste sliders on the Yummly.com search page). The values of min and max are between 0 and 1.
+#' @param facet_field facet counts for ingredient and diet. When this parameter is called, the response will include a facetCounts object that lists the matching diets or ingredients and how many results match each diet or ingredient.
 #' @param app_id application ID
 #' @param app_key application key
 #' @note This function resembles search query to Yummly API
@@ -130,6 +147,12 @@ search_recipes <- function(search_words, require_pictures,
     jsonlite::fromJSON(content)
 }
 
+#' Add argument to a query
+#' @param argument_values value of the argument
+#' @param argument_name name of the argument
+#' @param type argument type from metadata
+#' @param query existing query to append to
+#' @param check if to check again metadata values
 add_argument <- function(argument_values, argument_name, type, query, check = TRUE) {
     if (missing(argument_values)) {
         return(query)
@@ -158,7 +181,8 @@ prepare_array_parameter <- function(param, name) {
 #' Check ingredients
 #'
 #' Check ingredients list against predifined ingredients by Yummly
-#' @param ingredients ingridients to check
+#' @param arguments arguments from metadata to check to check
+#' @param type type of arguments from metadata
 #' @note Predifined list is downloaded from Metadata Dictionaries
 check_arguments <- function(arguments, type) {
     metadata <- metadata[[type]]

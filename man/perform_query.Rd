@@ -6,7 +6,10 @@
 \usage{
 perform_query(query)
 }
+\arguments{
+\item{query}{string query to execute}
+}
 \description{
-Process query
+Query Yummly API and check return codes
 }
 

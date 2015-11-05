@@ -4,7 +4,7 @@
 \alias{save_yummly_credentials}
 \title{Save API credentials for later use}
 \usage{
-save_yummly_credentials(app_id, app_key, check_correctness = FALSE)
+save_yummly_credentials(app_id, app_key)
 }
 \arguments{
 \item{app_id}{application ID}

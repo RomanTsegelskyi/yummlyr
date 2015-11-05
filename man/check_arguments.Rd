@@ -7,7 +7,9 @@
 check_arguments(arguments, type)
 }
 \arguments{
-\item{ingredients}{ingridients to check}
+\item{arguments}{arguments from metadata to check to check}
+
+\item{type}{type of arguments from metadata}
 }
 \description{
 Check ingredients list against predifined ingredients by Yummly

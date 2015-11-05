@@ -9,7 +9,6 @@
 #'}
 #' @param o option name (string). See below.
 #' @param value value to assign (optional)
-#' @export
 yummlyr_options <- function(o, value) {
     res <- getOption('yummlyr')
     ## just querying
@@ -35,6 +34,9 @@ yummlyr_options <- function(o, value) {
 }
 
 #' Process query
+#' 
+#' Query Yummly API and check return codes
+#' @param query string query to execute
 perform_query <- function(query) {
     response <- httr::GET(query)
     response_code <- response$status_code
@@ -57,10 +59,27 @@ perform_query <- function(query) {
 #' 
 #' This function parses JSONP that yummly uses as a response.
 #' It is based on assumption that list of elements is returned.
+#' @param jsonp jsonp string
 parse_jsonp <- function(jsonp) {
     # remove function name and opening parenthesis
     jsonp <- sub('[^\\[|\\{]*', '', jsonp) 
     # remove closing parenthesis
     jsonp <- sub('\\);*$', '', jsonp)
     jsonlite::fromJSON(jsonp)
+}
+
+allowed_metadata <- c("allergy", "diet", "ingredient", "cuisine", "course", "holiday")
+
+#' Get metadata
+#' 
+#' Return information about metadata
+#' @param type metadata type
+#' @export
+get_metadata <- function(type) {
+    if (!tolower(type) %in% allowed_metadata) {
+        stop(sprintf("Yummly doesn't have any metadata about %s. Allowed metadata: %s",
+                     type,
+                     paste(allowed_metadata, collapse=", ")))
+    }
+    metadata[[type]]
 }

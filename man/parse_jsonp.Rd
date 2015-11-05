@@ -6,6 +6,9 @@
 \usage{
 parse_jsonp(jsonp)
 }
+\arguments{
+\item{jsonp}{jsonp string}
+}
 \description{
 This function parses JSONP that yummly uses as a response.
 It is based on assumption that list of elements is returned.
