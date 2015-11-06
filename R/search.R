@@ -13,7 +13,7 @@
 #' @param excluded_cuisine search results will only exclude recipes with that cuisine
 #' @param allowed_course search results will only include recipes with that cuisine
 #' @param excluded_course search results will only exclude recipes with that cuisine
-#' @param allowed holiday search results will only include recipes with that holiday
+#' @param allowed_holiday search results will only include recipes with that holiday
 #' @param excluded_holiday search results will only exclude recipes with that holiday
 #' @param max_total_time search for recipes that do not exceed a specified max total cook + prep time in seconds
 #' @param max_results number of results to return
