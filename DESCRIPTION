@@ -1,12 +1,14 @@
 Package: yummlyr
 Type: Package
-Title: What the Package Does (Title Case)
+Title: R bindings for Yummly API
 Version: 0.1
-Date: 2015-08-31
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Date: 2015-11-07
+Author: Roman Tsegelskyi
+Maintainer: Roman Tsegelskyi <roman.tsegelskyi@gmail.com>
+Description: R bindings for Yummly API.
+URL: https://github.com/RomanTsegelskyi/yummlyr
+BugReports: https://github.com/RomanTsegelskyi/yummlyr/issues
+License: GPL (>= 2)
 LazyData: TRUE
 Depends:
     R (>= 2.10)

@@ -2,3 +2,7 @@
 ^README\.r*md$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.lintr$
+^\.gitignore$
+^\.travis\.yml$
+^updater.sh$

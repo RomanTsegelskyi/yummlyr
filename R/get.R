@@ -8,10 +8,10 @@
 #' @references \itemize{
 #'   \item Yummly Developer Guide \url{https://developer.yummly.com/documentation}
 #' }
-#' @param app_key application key
 #' @examples
 #' \dontrun{
-#' # to request the response for French Onion Soup by Ree Drummond The Pioneer Woman with id French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364
+#' # to request the response for French Onion Soup by Ree Drummond The Pioneer Woman 
+#' # with id French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364
 #' get_recipe("French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364")
 #' }
 #' @export

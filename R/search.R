@@ -35,34 +35,34 @@
 #' # search for recipes with bacon that have pictures
 #' search_recipes("bacon", require_pictures = TRUE)
 #' 
-#' # search for “Onion Soup” recipes which include garlic and cognac
+#' # search for "Onion Soup" recipes which include garlic and cognac
 #' search_recipes("Onion Soup", allowed_ingredient = c("garlic", "cognac"))
 #' 
-#' # search for “Onion Soup” recipes which do not include “onion soup mix” 
+#' # search for "Onion Soup" recipes which do not include "onion soup mix" 
 #' search_recipes("Onion Soup", excluded_ingredient = c("onion soup mix"))
 #' 
-#' # search for “Onion Soup” recipes that are Dairy-Free and Gluten-Free
+#' # search for "Onion Soup" recipes that are Dairy-Free and Gluten-Free
 #' search_recipes("bacon", allowed_allergy =c("Dairy-Free", "Gluten-Free"))
 #' 
-#' # search for “Onion Soup” recipes that are Pescetarian and Lacto vegetarian
+#' # search for "Onion Soup" recipes that are Pescetarian and Lacto vegetarian
 #' search_recipes("bacon", allowed_diet =c("Pescetarian", "Lacto vegetarian")
 #' 
-#' # search for “Onion Soup” recipes that match American Cuisine
+#' # search for "Onion Soup" recipes that match American Cuisine
 #' search_recipes("bacon", allowed_cuisine =c("American")
 #' 
-#' # exclude American recipes from a search for “Onion Soup”
+#' # exclude American recipes from a search for "Onion Soup"
 #' search_recipes("bacon", excluded_cuisine =c("American")
 #' 
-#' # search for “Onion Soup” recipes that are Appetizers
+#' # search for "Onion Soup" recipes that are Appetizers
 #' search_recipes("bacon", allowed_course =c("Appetizers")
 #' 
-#' # exclude Appetizer recipes from a search for “Onion Soup” 
+#' # exclude Appetizer recipes from a search for "Onion Soup" 
 #' search_recipes("bacon", excluded_course =c("Appetizers")
 #' 
-#' # search for “Onion Soup” recipes for Thanksgiving 
+#' # search for "Onion Soup" recipes for Thanksgiving 
 #' search_recipes("bacon", allowed_holiday =c("Thanksgiving")
 #' 
-#' # exclude Thanksgiving recipes from a search for “Onion Soup”
+#' # exclude Thanksgiving recipes from a search for "Onion Soup"
 #' search_recipes("bacon", excluded_holiday =c("Thanksgiving")
 #' 
 #' # if you want 20 recipes per page and want to see the second page of results
@@ -71,7 +71,8 @@
 #' # if you want to start with position 20
 #' search_recipes("bacon", start = 20)
 #' 
-#' # looking for recipes with a lot of Potassium, try setting a min of 3000 mg and a max of the Daily Suggested Value of 3500 mg
+#' # looking for recipes with a lot of Potassium, try setting a min of 3000 mg
+#' # and a max of the Daily Suggested Value of 3500 mg
 #' search_recipes("bacon", nutrition = list(Calcium=list(min=3, max=3.5)))
 #' 
 #' #  search for recipes which are very sweet but are not very spicy,
