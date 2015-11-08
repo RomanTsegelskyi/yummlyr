@@ -27,7 +27,8 @@
 #' @references \itemize{
 #'   \item Yummly Developer Guide \url{https://developer.yummly.com/documentation}
 #' }
-#' @examples 
+#' @examples
+#' \dontrun{
 #' # search for recipes with bacon
 #' search_recipes("bacon")
 #' 
@@ -75,6 +76,7 @@
 #' 
 #' #  search for recipes which are very sweet but are not very spicy,
 #' search_recipes("bacon", flavor = list(sweet=list(min=0.1, max=1)))
+#' }
 #' @export
 search_recipes <- function(search_words, require_pictures,
                            allowed_ingredient, excluded_ingredient,

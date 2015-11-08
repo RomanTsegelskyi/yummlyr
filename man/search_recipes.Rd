@@ -60,6 +60,7 @@ If you specify a multi-word phrase to the q parameter, every word has to match s
 This function resembles search query to Yummly API
 }
 \examples{
+\dontrun{
 # search for recipes with bacon
 search_recipes("bacon")
 
@@ -107,6 +108,7 @@ search_recipes("bacon", nutrition = list(Calcium=list(min=3, max=3.5)))
 
 #  search for recipes which are very sweet but are not very spicy,
 search_recipes("bacon", flavor = list(sweet=list(min=0.1, max=1)))
+}
 }
 \references{
 \itemize{

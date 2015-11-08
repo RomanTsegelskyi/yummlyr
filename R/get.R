@@ -9,9 +9,11 @@
 #'   \item Yummly Developer Guide \url{https://developer.yummly.com/documentation}
 #' }
 #' @param app_key application key
-#' @examples 
+#' @examples
+#' \dontrun{
 #' # to request the response for French Onion Soup by Ree Drummond The Pioneer Woman with id French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364
 #' get_recipe("French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364")
+#' }
 #' @export
 get_recipe <- function(recipe_id, app_id = auth_cache$APP_ID, app_key = auth_cache$APP_KEY) {
     if (is.null(app_id) || is.null(app_key)) {

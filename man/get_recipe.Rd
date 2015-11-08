@@ -23,8 +23,10 @@ This call is equivalent in functionality to a Yummly recipe page.
 This function resembles viewing a recipe on Yummly.com
 }
 \examples{
+\dontrun{
 # to request the response for French Onion Soup by Ree Drummond The Pioneer Woman with id French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364
 get_recipe("French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364")
+}
 }
 \references{
 \itemize{
