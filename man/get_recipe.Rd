@@ -12,6 +12,8 @@ get_recipe(recipe_id, app_id = auth_cache$APP_ID,
 
 \item{app_id}{application ID}
 
+\item{app_key}{application KEY}
+
 \item{app_key}{application key}
 }
 \description{
@@ -19,6 +21,10 @@ This call is equivalent in functionality to a Yummly recipe page.
 }
 \note{
 This function resembles viewing a recipe on Yummly.com
+}
+\examples{
+# to request the response for French Onion Soup by Ree Drummond The Pioneer Woman with id French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364
+get_recipe("French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364")
 }
 \references{
 \itemize{

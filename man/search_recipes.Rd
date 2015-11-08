@@ -31,6 +31,8 @@ search_recipes(search_words, require_pictures, allowed_ingredient,
 
 \item{excluded_course}{search results will only exclude recipes with that cuisine}
 
+\item{allowed_holiday}{search results will only include recipes with that holiday}
+
 \item{excluded_holiday}{search results will only exclude recipes with that holiday}
 
 \item{max_total_time}{search for recipes that do not exceed a specified max total cook + prep time in seconds}
@@ -48,8 +50,6 @@ search_recipes(search_words, require_pictures, allowed_ingredient,
 \item{app_id}{application ID}
 
 \item{app_key}{application key}
-
-\item{allowed}{holiday search results will only include recipes with that holiday}
 }
 \description{
 Query Yummly.com API to search for recipes with certain parameter. All parameters are optional and can be used in any combination.
@@ -58,6 +58,55 @@ If you specify a multi-word phrase to the q parameter, every word has to match s
 }
 \note{
 This function resembles search query to Yummly API
+}
+\examples{
+# search for recipes with bacon
+search_recipes("bacon")
+
+# search for recipes with bacon that have pictures
+search_recipes("bacon", require_pictures = TRUE)
+
+# search for “Onion Soup” recipes which include garlic and cognac
+search_recipes("Onion Soup", allowed_ingredient = c("garlic", "cognac"))
+
+# search for “Onion Soup” recipes which do not include “onion soup mix”
+search_recipes("Onion Soup", excluded_ingredient = c("onion soup mix"))
+
+# search for “Onion Soup” recipes that are Dairy-Free and Gluten-Free
+search_recipes("bacon", allowed_allergy =c("Dairy-Free", "Gluten-Free"))
+
+# search for “Onion Soup” recipes that are Pescetarian and Lacto vegetarian
+search_recipes("bacon", allowed_diet =c("Pescetarian", "Lacto vegetarian")
+
+# search for “Onion Soup” recipes that match American Cuisine
+search_recipes("bacon", allowed_cuisine =c("American")
+
+# exclude American recipes from a search for “Onion Soup”
+search_recipes("bacon", excluded_cuisine =c("American")
+
+# search for “Onion Soup” recipes that are Appetizers
+search_recipes("bacon", allowed_course =c("Appetizers")
+
+# exclude Appetizer recipes from a search for “Onion Soup”
+search_recipes("bacon", excluded_course =c("Appetizers")
+
+# search for “Onion Soup” recipes for Thanksgiving
+search_recipes("bacon", allowed_holiday =c("Thanksgiving")
+
+# exclude Thanksgiving recipes from a search for “Onion Soup”
+search_recipes("bacon", excluded_holiday =c("Thanksgiving")
+
+# if you want 20 recipes per page and want to see the second page of results
+search_recipes("bacon", max_results = 20)
+
+# if you want to start with position 20
+search_recipes("bacon", start = 20)
+
+# looking for recipes with a lot of Potassium, try setting a min of 3000 mg and a max of the Daily Suggested Value of 3500 mg
+search_recipes("bacon", nutrition = list(Calcium=list(min=3, max=3.5)))
+
+#  search for recipes which are very sweet but are not very spicy,
+search_recipes("bacon", flavor = list(sweet=list(min=0.1, max=1)))
 }
 \references{
 \itemize{

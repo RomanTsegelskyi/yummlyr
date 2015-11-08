@@ -27,6 +27,54 @@
 #' @references \itemize{
 #'   \item Yummly Developer Guide \url{https://developer.yummly.com/documentation}
 #' }
+#' @examples 
+#' # search for recipes with bacon
+#' search_recipes("bacon")
+#' 
+#' # search for recipes with bacon that have pictures
+#' search_recipes("bacon", require_pictures = TRUE)
+#' 
+#' # search for “Onion Soup” recipes which include garlic and cognac
+#' search_recipes("Onion Soup", allowed_ingredient = c("garlic", "cognac"))
+#' 
+#' # search for “Onion Soup” recipes which do not include “onion soup mix” 
+#' search_recipes("Onion Soup", excluded_ingredient = c("onion soup mix"))
+#' 
+#' # search for “Onion Soup” recipes that are Dairy-Free and Gluten-Free
+#' search_recipes("bacon", allowed_allergy =c("Dairy-Free", "Gluten-Free"))
+#' 
+#' # search for “Onion Soup” recipes that are Pescetarian and Lacto vegetarian
+#' search_recipes("bacon", allowed_diet =c("Pescetarian", "Lacto vegetarian")
+#' 
+#' # search for “Onion Soup” recipes that match American Cuisine
+#' search_recipes("bacon", allowed_cuisine =c("American")
+#' 
+#' # exclude American recipes from a search for “Onion Soup”
+#' search_recipes("bacon", excluded_cuisine =c("American")
+#' 
+#' # search for “Onion Soup” recipes that are Appetizers
+#' search_recipes("bacon", allowed_course =c("Appetizers")
+#' 
+#' # exclude Appetizer recipes from a search for “Onion Soup” 
+#' search_recipes("bacon", excluded_course =c("Appetizers")
+#' 
+#' # search for “Onion Soup” recipes for Thanksgiving 
+#' search_recipes("bacon", allowed_holiday =c("Thanksgiving")
+#' 
+#' # exclude Thanksgiving recipes from a search for “Onion Soup”
+#' search_recipes("bacon", excluded_holiday =c("Thanksgiving")
+#' 
+#' # if you want 20 recipes per page and want to see the second page of results
+#' search_recipes("bacon", max_results = 20)
+#' 
+#' # if you want to start with position 20
+#' search_recipes("bacon", start = 20)
+#' 
+#' # looking for recipes with a lot of Potassium, try setting a min of 3000 mg and a max of the Daily Suggested Value of 3500 mg
+#' search_recipes("bacon", nutrition = list(Calcium=list(min=3, max=3.5)))
+#' 
+#' #  search for recipes which are very sweet but are not very spicy,
+#' search_recipes("bacon", flavor = list(sweet=list(min=0.1, max=1)))
 #' @export
 search_recipes <- function(search_words, require_pictures,
                            allowed_ingredient, excluded_ingredient,
