@@ -1,7 +1,7 @@
 Package: yummlyr
 Type: Package
-Title: R bindings for Yummly API
-Version: 0.1
+Title: R Bindings for Yummly API
+Version: 0.1.0
 Date: 2015-11-07
 Author: Roman Tsegelskyi
 Maintainer: Roman Tsegelskyi <roman.tsegelskyi@gmail.com>
@@ -12,9 +12,11 @@ License: GPL (>= 2)
 LazyData: TRUE
 Depends:
     R (>= 2.10)
-Suggests: testthat,
+Suggests:
+    testthat,
     knitr
-Imports: 
+Imports:
     httr,
-    jsonlite,
+    jsonlite
 VignetteBuilder: knitr
+RoxygenNote: 5.0.0

@@ -7,3 +7,4 @@
 ^\.travis\.yml$
 ^updater.sh$
 ^revdep$
+cran-comments.md
