@@ -6,3 +6,4 @@
 ^\.gitignore$
 ^\.travis\.yml$
 ^updater.sh$
+^revdep$
