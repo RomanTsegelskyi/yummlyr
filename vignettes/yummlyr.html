@@ -10,7 +10,7 @@
 
 <meta name="author" content="Roman Tsegelskyi" />
 
-<meta name="date" content="2015-11-07" />
+<meta name="date" content="2015-11-09" />
 
 <title>Accessing yummly.com API with YummlyR</title>
 
@@ -28,7 +28,7 @@
 <div id="header">
 <h1 class="title">Accessing yummly.com API with YummlyR</h1>
 <h4 class="author"><em>Roman Tsegelskyi</em></h4>
-<h4 class="date"><em>2015-11-07</em></h4>
+<h4 class="date"><em>2015-11-09</em></h4>
 </div>
 
 
@@ -43,7 +43,7 @@
 <p>After that you can use <code>save_yummly_credentials</code> to presist the <code>application ID</code> and <code>application key</code> between querries, or supply the directly to <code>search_recipes</code> and <code>get_recipe</code> functions.</p>
 <div id="search-recipes" class="section level3">
 <h3>Search Recipes</h3>
-<p><code>search_recipes</code> function corresponds to <a href="https://developer.yummly.com/documentation#">Search Recipes API call</a> and is used to search for recipes fitting certain criterias. <a href="https://developer.yummly.com/wiki/search-recipes-response-sample">Example search response</a>. Simplest call looks like this:</p>
+<p><code>search_recipes</code> function corresponds to <a href="https://developer.yummly.com/documentation#">Search Recipes API call</a> and is used to search for recipes fitting certain criterias. <a href="https://developer.yummly.com/documentation/search-recipes-response-sample">Example search response</a>. Simplest call looks like this:</p>
 <pre><code>search_recipes('bacon')</code></pre>
 <p>YummlyR supports wide variety of criterias:</p>
 <ul>
@@ -73,9 +73,9 @@
 </div>
 <div id="get-recipe" class="section level3">
 <h3>Get Recipe</h3>
-<p>Fetch a recipe by its recipe ID. <a href="https://developer.yummly.com/wiki/get-recipe-response-sample">Example recipe response</a>. For example,</p>
+<p>Fetch a recipe by its recipe ID. <a href="https://developer.yummly.com/documentation/get-recipe-response-sample">Example recipe response</a>. For example,</p>
 <pre><code>get_recipe(&quot;French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364&quot;)</code></pre>
-<p>returns a detailed information about <a href="http://www.yummly.com/recipe/French-Onion-Soup-1332461">French Onion Soup French Onion Soup</a>.</p>
+<p>returns a detailed information about <a href="https://www.yummly.com/recipe/French-Onion-Soup-1332461">French Onion Soup French Onion Soup</a>.</p>
 </div>
 </div>
 

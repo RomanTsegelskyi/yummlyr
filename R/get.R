@@ -21,6 +21,6 @@ get_recipe <- function(recipe_id, app_id = auth_cache$APP_ID, app_key = auth_cac
     }
     query <- sprintf("%s/%s?_app_id=%s&_app_key=%s", URL_GET,
                      recipe_id, app_id, app_key)
-    content <- perform_query(URLencode(query))
+    content <- perform_query(utils::URLencode(query))
     jsonlite::fromJSON(content)
 }

@@ -194,7 +194,7 @@ search_recipes <- function(search_words, require_pictures,
         }
         query <- add_argument(facet_field, "facetField", "", query, check = FALSE)
     }
-    content <- perform_query(URLencode(query))
+    content <- perform_query(utils::URLencode(query))
     jsonlite::fromJSON(content)
 }
 
