@@ -2,9 +2,11 @@ library(testthat)
 library(yummlyr)
 
 context("Search Recipes")
-save_yummly_credentials("APP_ID", "APP_KEY")
 
 test_that("Search with actual http requests", {
+    app_id <- Sys.getenv("YUMMLY_APP_ID")
+    app_key <- Sys.getenv("YUMMLY_APP_KEY")
+    save_yummly_credentials(app_id, app_key)
     if (Sys.getenv("TRAVIS") != "" || Sys.getenv("APPVEYOR") != "") {
         result <- search_recipes("bacon")
         expect_is(result, "list")
@@ -20,7 +22,7 @@ test_that("Search with actual http requests", {
     }
 })
 
-
+save_yummly_credentials("APP_ID", "APP_KEY")
 test_that("Search. search_words argument works (with mocks)", {
     with_mock(
         `yummlyr::perform_query` = function(query) query,
