@@ -2,6 +2,7 @@ library(testthat)
 library(yummlyr)
 
 context("Search Recipes")
+save_yummly_credentials("APP_ID", "APP_KEY")
 
 test_that("Search with actual http requests", {
     if (Sys.getenv("TRAVIS") != "" || Sys.getenv("APPVEYOR") != "") {

@@ -1,9 +1,9 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Fixed incorrect URLs.
-
-* Corrected tests
+* Removed incorrect URL
+* Fixed the bug in tests
+* Extended DESCRIPTION
 
 ## Test environments
 * local OS X install, R 3.2.2

@@ -71,4 +71,4 @@ Fetch a recipe by its recipe ID. [Example recipe response](https://developer.yum
 
     get_recipe("French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364")
 
-returns a detailed information about [French Onion Soup French Onion Soup](https://www.yummly.com/recipe/French-Onion-Soup-1332461).
+returns a detailed information about French Onion Soup.
