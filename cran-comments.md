@@ -1,9 +1,7 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Removed incorrect URL
-* Fixed the bug in tests
-* Extended DESCRIPTION
+* Added missing dot in the end of description and corrected spelling mistake
 
 ## Test environments
 * local OS X install, R 3.2.2

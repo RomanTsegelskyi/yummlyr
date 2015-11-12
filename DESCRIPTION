@@ -6,7 +6,7 @@ Date: 2015-11-07
 Author: Roman Tsegelskyi
 Maintainer: Roman Tsegelskyi <roman.tsegelskyi@gmail.com>
 Description:
-    Yummly.com is one of the world's largest and most powerful recipe search sites and this package aims to provide R bindings for publically available Yummly.com Recipe API (https://developer.yummly.com/)
+    Yummly.com is one of the world's largest and most powerful recipe search sites and this package aims to provide R bindings for publicly available Yummly.com Recipe API (https://developer.yummly.com/).
 URL: https://github.com/RomanTsegelskyi/yummlyr
 BugReports: https://github.com/RomanTsegelskyi/yummlyr/issues
 License: GPL (>= 2)
