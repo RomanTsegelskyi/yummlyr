@@ -6,12 +6,16 @@ yummlyr
 
 R package with bindings for [Yummly API](developer.yummly.com)
 
-**NOTE**: Neither this package or its author is affiliated Yummly.
+NOTE: Neither this package or its author is affiliated Yummly.
 
 Installation
 ============
 
-Since package has not yet been release to CRAN, you can get it by running
+To install the release version of `yummlyr` from CRAN:
+
+    install.packages('yummlyr')
+
+To get the development version from Github:
 
     devtools::intstall_github("RomanTsegelskyi/yummlyr")
 
@@ -54,7 +58,7 @@ For example,
 
 will return onion soup recipes that have bacon as one of the ingredients. More detailed expanations of Yummly's Search API with example can be found [here](https://developer.yummly.com/documentation#).
 
-**NOTE**: Allowed values for `ingeredient`, `diet`, `allergy`, `cuisine`, `course`, `holiday`, `nutrition` and `flavor` are defined by [Yummly.com metadata](https://developer.yummly.com/documentation#Metadata) and saved inside the package for convenience. Available metadata can be accessed using `get_metadata` function, for example,
+**Note** that allowed values for `ingeredient`, `diet`, `allergy`, `cuisine`, `course`, `holiday`, `nutrition` and `flavor` are defined by [Yummly.com metadata](https://developer.yummly.com/documentation#Metadata) and saved inside the package for convenience. Available metadata can be accessed using `get_metadata` function, for example,
 
     get_metadata('holiday')
 

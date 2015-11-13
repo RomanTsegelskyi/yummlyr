@@ -29,7 +29,13 @@ NOTE: Neither this package or its author is affiliated Yummly.
 Installation
 ============
 
-Since package has not yet been release to CRAN, you can get it by running
+To install the release version of `yummlyr` from CRAN:
+
+```
+install.packages('yummlyr')
+```
+
+To get the development version from Github:
 
 ```
 devtools::intstall_github("RomanTsegelskyi/yummlyr")
