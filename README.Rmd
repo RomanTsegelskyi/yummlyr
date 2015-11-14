@@ -31,50 +31,48 @@ Installation
 
 To install the release version of `yummlyr` from CRAN:
 
-```
+```R
 install.packages('yummlyr')
 ```
 
 To get the development version from Github:
 
-```
+```R
 devtools::intstall_github("RomanTsegelskyi/yummlyr")
 ```
 
 Usage
 =====
 
-First of all, obtain an API credentials from [Yummly.com](https://developer.yummly.com/).
-
-After that you can use `save_yummly_credentials` to presist the `application ID` and `application key` between querries, or supply the directly to `search_recipes` and `get_recipe` functions.
+First of all, obtain API credentials from [Yummly.com](https://developer.yummly.com/). After that you can use `save_yummly_credentials()` to persist the application ID and application key between queries, or supply them directly to `search_recipes()` and `get_recipe()` functions.
 
 Search Recipes
 --------------
 
-`search_recipes` function corresponds to [Search Recipes API call](https://developer.yummly.com/documentation#) and is used to search for recipes fitting certain criterias. [Example search response](https://developer.yummly.com/wiki/search-recipes-response-sample). Simplest call looks like this:
+`search_recipes()` function corresponds to [Search Recipes API call](https://developer.yummly.com/documentation#) and is used to search for recipes fitting certain criterias. [Example search response](https://developer.yummly.com/wiki/search-recipes-response-sample). The simplest call looks like this:
 
-```
+```R
 search_recipes('bacon')
 ```
 
-YummlyR supports wide variety of criterias:
+YummlyR supports wide variety of criteria:
 
-* `require_pictures` set to TRUE if only to return recipes with photos
-* `allowed_ingredient` ingredient that all search results must include
-* `excluded_ingredient` ingredient that all search results should not contain
-* `allowed_diet` search results will only include recipes whose ingredients are allowed for that diet
-* `allowed_allergy` only include recipes whose ingredients are allowed for that allergy
-* `allowed_cuisine` search results will only include recipes with that cuisine
-* `excluded_cuisine` search results will only exclude recipes with that cuisine
-* `allowed_course` search results will only include recipes with that cuisine
-* `excluded_course` search results will only exclude recipes with that cuisine
-* `excluded_holiday` search results will only exclude recipes with that holiday
-* `max_total_time` search for recipes that do not exceed a specified max total cook + prep time in seconds
-* `max_results` number of results to return
-* `start` start with specific result in search
-* `nutrition` set the range of allowed values for a given nutrition attribute (see below for the list of supported nutrition attributes) by setting a min and/or a max
-* `flavor` set the ranges for taste attributes (this corresponds to the taste sliders on the Yummly.com search page). The values of min and max are between 0 and 1.
-* `facet_field` facet counts for ingredient and diet. When this parameter is called, the response will include a facetCounts object that lists the matching diets or ingredients and how many results match each diet or ingredient.
+* `require_pictures`: if `TRUE`, only to return recipes with photos.
+* `allowed_ingredient`: ingredient that all search results must include.
+* `excluded_ingredient`: ingredient that all search results should not contain.
+* `allowed_diet`: search results will only include recipes whose ingredients are allowed for that diet.
+* `allowed_allergy`: only include recipes whose ingredients are allowed for that allergy.
+* `allowed_cuisine`: search results will only include recipes with that cuisine.
+* `excluded_cuisine`: search results will only exclude recipes with that cuisine.
+* `allowed_course`: search results will only include recipes with that cuisine.
+* `excluded_course`: search results will only exclude recipes with that cuisine.
+* `excluded_holiday`: search results will only exclude recipes with that holiday.
+* `max_total_time`: search for recipes that do not exceed a specified max total cook + prep time in seconds
+* `max_results`: number of results to return.
+* `start`: start with specific result in search.
+* `nutrition`: set the range of allowed values for a given nutrition attribute (see below for the list of supported nutrition attributes) by setting a min and/or a max.
+* `flavor`: set the ranges for taste attributes (this corresponds to the taste sliders on the Yummly.com search page). The values of min and max are between 0 and 1.
+* `facet_field`: facet counts for ingredient and diet. When this parameter is called, the response will include a facetCounts object that lists the matching diets or ingredients and how many results match each diet or ingredient.
 
 For example, 
 
@@ -82,25 +80,24 @@ For example,
 search_recipes("onion soup", allowed_ingredient = "bacon")
 ```
 
-will return onion soup recipes that have bacon as one of the ingredients. More detailed expanations of Yummly's Search API with example can be found [here](https://developer.yummly.com/documentation#).
+will return onion soup recipes that contain bacon. More detailed expanations of Yummly's Search API with example can be found [here](https://developer.yummly.com/documentation#).
 
-**Note** that allowed values for `ingeredient`, `diet`, `allergy`, `cuisine`, `course`, `holiday`, `nutrition` and `flavor` are defined by [Yummly.com metadata](https://developer.yummly.com/documentation#Metadata) and saved inside the package for convenience. Available metadata can be accessed using `get_metadata` function, for example,
+**Note** that allowed values for `ingeredient`, `diet`, `allergy`, `cuisine`, `course`, `holiday`, `nutrition` and `flavor` are defined by [Yummly.com metadata](https://developer.yummly.com/documentation#Metadata) and saved inside the package for convenience. Available metadata can be accessed with `get_metadata()`:
 
-```
+```R
 get_metadata('holiday')
 ```
 
-will return you `data.frame` with information about available `holiday` keywords.
+This returns a `data.frame` with information about available `holiday` keywords.
 
 
 Get Recipe
 -------
 
-Fetch a recipe by its recipe ID. [Example recipe response](https://developer.yummly.com/wiki/get-recipe-response-sample). For example, 
+Fetch a recipe by its ID. [Example recipe response](https://developer.yummly.com/wiki/get-recipe-response-sample). For example:
 
-```
+```R
 get_recipe("French-Onion-Soup-The-Pioneer-Woman-Cooks-_-Ree-Drummond-41364")
 ```
 
-returns a detailed information about [French Onion Soup
-French Onion Soup](http://www.yummly.com/recipe/French-Onion-Soup-1332461).
+This returns detailed information about [French Onion Soup French Onion Soup](http://www.yummly.com/recipe/French-Onion-Soup-1332461).
