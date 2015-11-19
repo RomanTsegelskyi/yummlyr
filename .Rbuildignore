@@ -8,3 +8,4 @@
 ^updater.sh$
 ^revdep$
 cran-comments.md
+NEWS.md

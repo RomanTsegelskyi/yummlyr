@@ -74,7 +74,7 @@ test_that("Search. allowed_allergy argument works (with mocks)", {
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
         result <- search_recipes("bacon", allowed_allergy =c("Dairy-Free", "Gluten-Free")),
-        expect_true(grepl("allowedAllergy\\[\\]=396%5EDairy-Free&allowedAllergy\\[\\]=393%5EGluten-Free$", result)),
+        expect_true(grepl("allowedAllergy\\[\\]=396%5[Ee]Dairy-Free&allowedAllergy\\[\\]=393%5[Ee]Gluten-Free$", result)),
         expect_error(search_recipes("bacon", allowed_allergy = "Dairy2")),
         expect_warning(search_recipes("bacon", allowed_allergy = "Dairy"))
     )
@@ -85,7 +85,7 @@ test_that("Search. allowed_diet argument works (with mocks)", {
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
         result <- search_recipes("bacon", allowed_diet =c("Pescetarian", "Lacto vegetarian")),
-        expect_true(grepl("allowedDiet\\[\\]=390%5EPescetarian&allowedDiet\\[\\]=388%5ELacto%20vegetarian$", result)),
+        expect_true(grepl("allowedDiet\\[\\]=390%5[Ee]Pescetarian&allowedDiet\\[\\]=388%5[Ee]Lacto%20vegetarian$", result)),
         expect_error(search_recipes("bacon", allowed_diet = "Lacto2")),
         expect_warning(search_recipes("bacon", allowed_diet = "Lacto"))
     )
@@ -96,7 +96,7 @@ test_that("Search. allowed_cuisine argument works (with mocks)", {
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
         result <- search_recipes("bacon", allowed_cuisine =c("American")),
-        expect_true(grepl("allowedCuisine\\[\\]=cuisine%5Ecuisine-american", result)),
+        expect_true(grepl("allowedCuisine\\[\\]=cuisine%5[Ee]cuisine-american", result)),
         expect_error(search_recipes("bacon", allowed_cuisine = "American2")),
         expect_warning(search_recipes("bacon", allowed_cuisine = "Ame"))
     )
@@ -107,7 +107,7 @@ test_that("Search. excluded_cuisine argument works (with mocks)", {
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
         result <- search_recipes("bacon", excluded_cuisine =c("American")),
-        expect_true(grepl("excludedCuisine\\[\\]=cuisine%5Ecuisine-american", result)),
+        expect_true(grepl("excludedCuisine\\[\\]=cuisine%5[Ee]cuisine-american", result)),
         expect_error(search_recipes("bacon", excluded_cuisine = "American2")),
         expect_warning(search_recipes("bacon", excluded_cuisine = "Ame"))
     )
@@ -118,7 +118,7 @@ test_that("Search. allowed_course argument works (with mocks)", {
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
         result <- search_recipes("bacon", allowed_course =c("Appetizers")),
-        expect_true(grepl("allowedCourse\\[\\]=course%5Ecourse-Appetizers", result)),
+        expect_true(grepl("allowedCourse\\[\\]=course%5[Ee]course-Appetizers", result)),
         expect_error(search_recipes("bacon", allowed_course = "Appetizers2")),
         expect_warning(search_recipes("bacon", allowed_course = "Appeti"))
     )
@@ -129,7 +129,7 @@ test_that("Search. excluded_course argument works (with mocks)", {
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
         result <- search_recipes("bacon", excluded_course =c("Appetizers")),
-        expect_true(grepl("excludedCourse\\[\\]=course%5Ecourse-Appetizers", result)),
+        expect_true(grepl("excludedCourse\\[\\]=course%5[Ee]course-Appetizers", result)),
         expect_error(search_recipes("bacon", excluded_course = "Appetizers2")),
         expect_warning(search_recipes("bacon", excluded_course = "Appeti"))
     )
@@ -140,7 +140,7 @@ test_that("Search. allowed_holiday argument works (with mocks)", {
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
         result <- search_recipes("bacon", allowed_holiday =c("Thanksgiving")),
-        expect_true(grepl("allowedHoliday\\[\\]=holiday%5Eholiday-thanksgiving", result)),
+        expect_true(grepl("allowedHoliday\\[\\]=holiday%5[Ee]holiday-thanksgiving", result)),
         expect_error(search_recipes("bacon", allowed_holiday = "Thanksgiving2")),
         expect_warning(search_recipes("bacon", allowed_holiday = "Thanks"))
     )
@@ -151,7 +151,7 @@ test_that("Search. excluded_holiday argument works (with mocks)", {
         `yummlyr::perform_query` = function(query) query,
         `jsonlite::fromJSON` = function(content) content,
         result <- search_recipes("bacon", excluded_holiday =c("Thanksgiving")),
-        expect_true(grepl("excludedHoliday\\[\\]=holiday%5Eholiday-thanksgiving", result)),
+        expect_true(grepl("excludedHoliday\\[\\]=holiday%5[Ee]holiday-thanksgiving", result)),
         expect_error(search_recipes("bacon", excluded_holiday = "Thanksgiving2")),
         expect_warning(search_recipes("bacon", excluded_holiday = "Thanks"))
     )
