@@ -38,7 +38,7 @@ install.packages('yummlyr')
 To get the development version from Github:
 
 ```R
-devtools::intstall_github("RomanTsegelskyi/yummlyr")
+devtools::install_github("RomanTsegelskyi/yummlyr")
 ```
 
 Usage
